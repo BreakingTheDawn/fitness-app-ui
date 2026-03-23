@@ -1,0 +1,423 @@
+/**
+ * 响应式样式系统
+ * 定义断点、变量和响应式布局工具类
+ */
+
+:root {
+  /* 断点变量 - 与 JS 同步使用 */
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1440px;
+
+  /* 布局变量 */
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 72px;
+  --header-height: 64px;
+  --tab-bar-height: 64px;
+
+  /* 内容区域最大宽度 */
+  --content-max-width: 1200px;
+  --card-max-width: 480px;
+
+  /* 安全区域 - 适配刘海屏和底部手势条 */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+
+  /* 间距缩放 - 使用 clamp 实现响应式间距 */
+  --spacing-xs: clamp(3px, 1vw, 4px);
+  --spacing-sm: clamp(6px, 2vw, 8px);
+  --spacing-md: clamp(12px, 3vw, 16px);
+  --spacing-lg: clamp(18px, 4.5vw, 24px);
+  --spacing-xl: clamp(24px, 6vw, 32px);
+  --spacing-2xl: clamp(36px, 9vw, 48px);
+
+  /* 字体缩放 - 流体缩放实现自适应字体大小 */
+  --font-size-xs: clamp(10px, 2.5vw, 11px);
+  --font-size-sm: clamp(12px, 3vw, 13px);
+  --font-size-base: clamp(14px, 3.5vw, 15px);
+  --font-size-lg: clamp(16px, 4vw, 18px);
+  --font-size-xl: clamp(18px, 4.5vw, 22px);
+  --font-size-2xl: clamp(22px, 5.5vw, 28px);
+  --font-size-3xl: clamp(26px, 6.5vw, 32px);
+
+  /* 圆角 */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.16);
+
+  /* 过渡 */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+}
+
+/* 响应式容器 */
+.responsive-container {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .responsive-container {
+    padding: 0 var(--spacing-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-container {
+    padding: 0 var(--spacing-xl);
+  }
+}
+
+/* 响应式网格 */
+.responsive-grid {
+  display: grid;
+  gap: var(--spacing-md);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 480px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 响应式卡片网格 */
+.card-grid {
+  display: grid;
+  gap: var(--spacing-md);
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+}
+
+@media (min-width: 768px) {
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+  }
+}
+
+/* 响应式教练卡片网格 */
+.coach-grid {
+  display: grid;
+  gap: var(--spacing-md);
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+@media (min-width: 768px) {
+  .coach-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+  }
+}
+
+/* 隐藏/显示工具类 */
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none;
+  }
+
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* 响应式字体 */
+.text-responsive-sm {
+  font-size: var(--font-size-xs);
+}
+
+.text-responsive-base {
+  font-size: var(--font-size-sm);
+}
+
+.text-responsive-lg {
+  font-size: var(--font-size-base);
+}
+
+.text-responsive-xl {
+  font-size: var(--font-size-lg);
+}
+
+@media (min-width: 768px) {
+  .text-responsive-sm {
+    font-size: var(--font-size-sm);
+  }
+
+  .text-responsive-base {
+    font-size: var(--font-size-base);
+  }
+
+  .text-responsive-lg {
+    font-size: var(--font-size-lg);
+  }
+
+  .text-responsive-xl {
+    font-size: var(--font-size-xl);
+  }
+}
+
+/* 响应式间距 */
+.p-responsive {
+  padding: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+  .p-responsive {
+    padding: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 1024px) {
+  .p-responsive {
+    padding: var(--spacing-xl);
+  }
+}
+
+/* 侧边栏布局 */
+.layout-with-sidebar {
+  display: flex;
+  min-height: 100vh;
+}
+
+.layout-with-sidebar .sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  transition: width var(--transition-normal);
+}
+
+.layout-with-sidebar .sidebar.collapsed {
+  width: var(--sidebar-collapsed-width);
+}
+
+.layout-with-sidebar .main-content {
+  flex: 1;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+/* 响应式侧边栏 - 移动端隐藏 */
+@media (max-width: 767px) {
+  .layout-with-sidebar .sidebar {
+    display: none;
+  }
+}
+
+/* 模式切换按钮动画 */
+.mode-switch-btn {
+  position: fixed;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.mode-switch-btn:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+.mode-switch-btn:active {
+  transform: translateY(0);
+}
+
+/* 手机模拟器模式样式 */
+.phone-emulator-mode {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  background: #F8F9FA;
+  overflow: hidden;
+}
+
+@media (min-width: 481px) {
+  .phone-emulator-mode {
+    border-radius: 40px;
+    height: min(900px, 100dvh);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 60px rgba(0, 0, 0, 0.2), 0 0 0 12px #1a1a1a;
+  }
+}
+
+/* 响应式模式样式 */
+.responsive-mode {
+  width: 100%;
+  min-height: 100vh;
+  background: #F8F9FA;
+}
+
+/* 桌面端内容区域 */
+@media (min-width: 768px) {
+  .responsive-mode .desktop-content {
+    padding: var(--spacing-lg);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+  }
+}
+
+/* 滚动容器 */
+.page-scroll {
+  height: calc(100dvh - var(--tab-bar-height));
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.page-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 响应式模式下的滚动容器 */
+@media (min-width: 768px) {
+  .responsive-mode .page-scroll {
+    height: calc(100vh - var(--header-height));
+  }
+}
+
+/* 动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-normal) ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft var(--transition-normal) ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight var(--transition-normal) ease-out;
+}
+
+/* 横屏锁定遮罩 - 强制竖屏显示 */
+.orientation-lock-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, #FF7D3B 0%, #FF5500 100%);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+@media (orientation: landscape) and (max-width: 767px) {
+  .orientation-lock-overlay {
+    display: flex;
+  }
+}
+
+.orientation-lock-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 24px;
+  animation: rotate-phone 2s ease-in-out infinite;
+}
+
+@keyframes rotate-phone {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-90deg); }
+}
+
+/* 响应式字体工具类 - 使用流体字体变量 */
+.text-fluid-xs { font-size: var(--font-size-xs); }
+.text-fluid-sm { font-size: var(--font-size-sm); }
+.text-fluid-base { font-size: var(--font-size-base); }
+.text-fluid-lg { font-size: var(--font-size-lg); }
+.text-fluid-xl { font-size: var(--font-size-xl); }
+.text-fluid-2xl { font-size: var(--font-size-2xl); }
+
+/* 响应式间距工具类 - 使用流体间距变量 */
+.p-fluid-xs { padding: var(--spacing-xs); }
+.p-fluid-sm { padding: var(--spacing-sm); }
+.p-fluid-md { padding: var(--spacing-md); }
+.p-fluid-lg { padding: var(--spacing-lg); }
+.p-fluid-xl { padding: var(--spacing-xl); }
+
+.gap-fluid-xs { gap: var(--spacing-xs); }
+.gap-fluid-sm { gap: var(--spacing-sm); }
+.gap-fluid-md { gap: var(--spacing-md); }
+.gap-fluid-lg { gap: var(--spacing-lg); }
