@@ -29,7 +29,7 @@ export class User extends BaseEntity {
   })
   role: UserRole;
 
-  @Column({ name: 'coach_id', nullable: true })
+  @Column({ name: 'coach_id', type: 'integer', nullable: true })
   coachId: number | null;
 
   @Column({ name: 'is_coach_verified', default: false })
