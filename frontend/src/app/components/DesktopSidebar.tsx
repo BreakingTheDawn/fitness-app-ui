@@ -1,0 +1,267 @@
+import { useState } from 'react';
+import {
+  Zap, Home, Calendar, Dumbbell, ShoppingBag, User,
+  ChevronLeft, ChevronRight, Bell, Settings,
+  Users, BookOpen, Wallet
+} from 'lucide-react';
+
+// 用户端Tab类型
+export type UserTabKey = 'home' | 'today' | 'workout' | 'mall' | 'profile';
+// 教练端Tab类型
+export type CoachTabKey = 'coach-home' | 'coach-students' | 'coach-courses' | 'coach-income' | 'coach-profile';
+// 统一Tab类型
+export type TabKey = UserTabKey | CoachTabKey;
+
+interface DesktopSidebarProps {
+  activeTab: TabKey;
+  onTabChange: (tab: TabKey) => void;
+  isCoach?: boolean;
+}
+
+// 用户端菜单项
+const USER_MENU_ITEMS = [
+  { key: 'home' as UserTabKey, label: '首页', icon: Home },
+  { key: 'today' as UserTabKey, label: '今日', icon: Calendar },
+  { key: 'workout' as UserTabKey, label: '运动', icon: Dumbbell },
+  { key: 'mall' as UserTabKey, label: '商城', icon: ShoppingBag },
+  { key: 'profile' as UserTabKey, label: '我的', icon: User },
+];
+
+// 教练端菜单项
+const COACH_MENU_ITEMS = [
+  { key: 'coach-home' as CoachTabKey, label: '首页', icon: Home },
+  { key: 'coach-students' as CoachTabKey, label: '学员', icon: Users },
+  { key: 'coach-courses' as CoachTabKey, label: '课程', icon: BookOpen },
+  { key: 'coach-income' as CoachTabKey, label: '收益', icon: Wallet },
+  { key: 'coach-profile' as CoachTabKey, label: '我的', icon: User },
+];
+
+/**
+ * 桌面端侧边栏组件
+ * 支持用户端和教练端双模式
+ */
+export function DesktopSidebar({ activeTab, onTabChange, isCoach = false }: DesktopSidebarProps) {
+  const [collapsed, setCollapsed] = useState(false);
+
+  // 根据模式选择菜单项
+  const menuItems = isCoach ? COACH_MENU_ITEMS : USER_MENU_ITEMS;
+  const appName = isCoach ? '教练工作台' : '练遇健身';
+
+  return (
+    <aside
+      style={{
+        width: collapsed ? 72 : 'var(--sidebar-width)',
+        height: '100vh',
+        background: 'white',
+        borderRight: '1px solid rgba(0, 0, 0, 0.06)',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'width 250ms ease',
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        zIndex: 100,
+      }}
+    >
+      {/* Logo 区域 */}
+      <div
+        style={{
+          height: 64,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'flex-start',
+          padding: collapsed ? 0 : '0 20px',
+          borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
+        }}
+      >
+        <div
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: '50%',
+            background: isCoach ? '#2A2D34' : '#FF7D3B',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Zap size={18} color="white" />
+        </div>
+        {!collapsed && (
+          <span
+            style={{
+              marginLeft: 10,
+              fontWeight: 700,
+              fontSize: 'var(--font-size-lg)',
+              color: '#2A2D34',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {appName}
+          </span>
+        )}
+      </div>
+
+      {/* 导航菜单 */}
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
+        {menuItems.map((item) => {
+          const isActive = activeTab === item.key;
+          const Icon = item.icon;
+
+          return (
+            <button
+              key={item.key}
+              onClick={() => onTabChange(item.key)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: collapsed ? 'center' : 'flex-start',
+                padding: collapsed ? '12px 0' : '12px 16px',
+                marginBottom: 4,
+                borderRadius: 12,
+                background: isActive ? (isCoach ? '#E8E8E8' : '#FFF0E8') : 'transparent',
+                color: isActive ? (isCoach ? '#2A2D34' : '#FF7D3B') : '#6B7280',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 150ms ease',
+              }}
+              title={item.label}
+            >
+              <Icon size={20} />
+              {!collapsed && (
+                <span
+                  style={{
+                    marginLeft: 12,
+                    fontWeight: isActive ? 600 : 400,
+                    fontSize: 'var(--font-size-base)',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {item.label}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </nav>
+
+      {/* 底部功能区 */}
+      <div
+        style={{
+          padding: '12px',
+          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+        }}
+      >
+        {/* 通知按钮 */}
+        <button
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            padding: collapsed ? '12px 0' : '12px 16px',
+            borderRadius: 12,
+            background: 'transparent',
+            color: '#6B7280',
+            border: 'none',
+            cursor: 'pointer',
+            marginBottom: 4,
+          }}
+          title="消息通知"
+        >
+          <Bell size={20} />
+          {!collapsed && (
+            <span style={{ marginLeft: 12, fontSize: 'var(--font-size-base)' }}>消息通知</span>
+          )}
+        </button>
+
+        {/* 设置按钮 */}
+        <button
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            padding: collapsed ? '12px 0' : '12px 16px',
+            borderRadius: 12,
+            background: 'transparent',
+            color: '#6B7280',
+            border: 'none',
+            cursor: 'pointer',
+            marginBottom: 4,
+          }}
+          title="设置"
+        >
+          <Settings size={20} />
+          {!collapsed && (
+            <span style={{ marginLeft: 12, fontSize: 'var(--font-size-base)' }}>设置</span>
+          )}
+        </button>
+
+        {/* 折叠按钮 */}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: collapsed ? 'center' : 'flex-start',
+            padding: collapsed ? '12px 0' : '12px 16px',
+            borderRadius: 12,
+            background: 'transparent',
+            color: '#6B7280',
+            border: 'none',
+            cursor: 'pointer',
+          }}
+          title={collapsed ? '展开侧边栏' : '折叠侧边栏'}
+        >
+          {collapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
+          {!collapsed && (
+            <span style={{ marginLeft: 12, fontSize: 'var(--font-size-base)' }}>收起</span>
+          )}
+        </button>
+      </div>
+
+      {/* 用户信息 */}
+      <div
+        style={{
+          padding: '16px 12px',
+          borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: collapsed ? 'center' : 'flex-start',
+        }}
+      >
+        <div
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: '50%',
+            background: isCoach 
+              ? 'linear-gradient(135deg, #2A2D34, #4A4D54)' 
+              : 'linear-gradient(135deg, #FF7D3B, #FF9A5C)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}
+        >
+          <span style={{ color: 'white', fontWeight: 600, fontSize: 'var(--font-size-base)' }}>
+            {isCoach ? 'C' : 'U'}
+          </span>
+        </div>
+        {!collapsed && (
+          <div style={{ marginLeft: 12, overflow: 'hidden' }}>
+            <div style={{ fontWeight: 600, fontSize: 'var(--font-size-base)', color: '#2A2D34' }}>
+              {isCoach ? '李教练' : '用户昵称'}
+            </div>
+            <div style={{ fontSize: 'var(--font-size-sm)', color: '#9CA3AF' }}>
+              {isCoach ? '金牌教练' : '查看个人主页'}
+            </div>
+          </div>
+        )}
+      </div>
+    </aside>
+  );
+}

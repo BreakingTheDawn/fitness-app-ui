@@ -24,13 +24,3 @@ Thumbs.db
 .env
 .env.local
 .env.production
-
-# 数据库文件
-*.db
-*.sqlite
-
-# 项目特定忽略
-docs/
-findings.md
-progress.md
-task_plan.md
