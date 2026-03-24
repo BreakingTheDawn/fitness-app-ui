@@ -1,7 +1,4 @@
-
-  # Design responsive fitness app
-
-  This is a code bundle for Design responsive fitness app. The original project is available at https://www.figma.com/design/sCCBR5cylyLWX6uyNUrlx0/Design-responsive-fitness-app.
+健身类应用前端 UI 实战项目，基于 TypeScript 开发，遵循前端 UI 设计规范，完成健身课程展示、运动数据统计、个人中心等核心页面的布局与交互实现，兼顾界面美观性与操作流畅性。
 
   ## Running the code
 
